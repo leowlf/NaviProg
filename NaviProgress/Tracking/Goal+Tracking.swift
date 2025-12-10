@@ -16,7 +16,4 @@ extension Goal {
 }
 
 
-ekeke
-
-enume
 
