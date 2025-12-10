@@ -3,27 +3,31 @@ import SwiftUI
 struct ContentView: View {
 
     @StateObject var avatarVM = AvatarViewModel()
-
-    // Global goals
-    @State private var goals: [Goal] = [
-        Goal(title: "Sport", icon: "🏋️‍♂️", type: .quantite, target: 5, unit: "km", frequency: .hebdomadaire, progress: 0.4, storedProgressValue: 2),
-        Goal(title: "Lecture", icon: "📚", type: .quantite, target: 30, unit: "pages", frequency: .quotidien, progress: 0.7, storedProgressValue: 21)
-    ]
+    @State private var goals: [Goal] = []
 
     var body: some View {
         TabView {
-
+            
+            // HOME
             Home(avatarVM: avatarVM, goals: $goals)
-                .tabItem { Label("Home", systemImage: "house") }
-
+                .tabItem {
+                    Label("Home", systemImage: "house.fill")
+                }
+            
+            // OBJECTIFS
             Objectifs(avatarVM: avatarVM, goals: $goals)
-                .tabItem { Label("Objectifs", systemImage: "target") }
-
+                .tabItem {
+                    Label("Objectifs", systemImage: "target")
+                }
+            
+            // TRACKING
             TrackingView(avatarVM: avatarVM, goals: $goals)
-                .tabItem { Label("Tracking", systemImage: "checkmark.circle") }
+                .tabItem {
+                    Label("Tracking", systemImage: "square.and.pencil")
+                }
         }
         .onAppear {
-            avatarVM.speak("Bienvenue ! Je suis ton assistant 🤖")
+            avatarVM.speak("Heureux de te revoir ! On continue nos progrès ensemble 🚀")
         }
     }
 }

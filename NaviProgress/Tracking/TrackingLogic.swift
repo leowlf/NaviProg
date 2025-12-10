@@ -2,38 +2,40 @@
 //  TrackingLogic.swift
 //  NaviProgress
 //
-//  Created by Wolff on 10/12/2025.
-//
+
 import Foundation
 
-func updateGoalProgress(goal: inout Goal, value: Double) {
-    
-    switch goal.frequency {
+struct TrackingLogic {
 
-    case .quotidien:
-        switch goal.type {
-        case .habitude:
-            // habitude = booléen → 1 = fait / 0 = pas fait
-            goal.progressValue = value
+    /// Calcule la nouvelle valeur de progression en fonction du type et de la fréquence
+    static func updateProgress(for goal: Goal, with input: Double) -> Double {
 
-        case .duree, .quantite:
-            // on cumule (permet de "gratter" la journée)
-            goal.progressValue += value
+        switch goal.frequency {
 
-        default:
-            goal.progressValue = value
+        case .quotidien:
+            // Valeur REMPLACÉE chaque jour
+            return min(input / goal.target, 1.0)
+
+        case .hebdomadaire:
+            // Valeur CUMULÉE dans la semaine
+            let newValue = goal.storedProgressValue + input
+            return min(newValue / goal.target, 1.0)
+
+        case .mensuel:
+            // Valeur CUMULÉE dans le mois
+            let newValue = goal.storedProgressValue + input
+            return min(newValue / goal.target, 1.0)
+
+        case .annuel:
+            // Valeur CUMULÉE dans l'année
+            let newValue = goal.storedProgressValue + input
+            return min(newValue / goal.target, 1.0)
+
+        case .unique:
+            // Objectif ponctuel → progression cumulée
+            let newValue = goal.storedProgressValue + input
+            return min(newValue / goal.target, 1.0)
         }
-
-    case .hebdomadaire, .mensuel:
-        // cumuls
-        goal.progressValue += value
-
-    case .unique:
-        // remplace
-        goal.progressValue = value
     }
-
-    // Mise à jour du pourcentage ✔
-    goal.progress = min(goal.progressValue / goal.target, 1.0)
 }
 

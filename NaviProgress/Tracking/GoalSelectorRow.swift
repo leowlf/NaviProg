@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct GoalSelectorRow: View {
-
     var goal: Goal
     @Binding var selectedGoal: Goal?
 
